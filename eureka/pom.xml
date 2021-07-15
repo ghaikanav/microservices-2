@@ -8,7 +8,7 @@
 		<groupId>com.sapient</groupId>
 		<artifactId>project</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<packaging>pom</packaging>
+		<packaging>jar</packaging>
 	</parent>
 	<groupId>com.sapient</groupId>
 	<artifactId>eureka</artifactId>
