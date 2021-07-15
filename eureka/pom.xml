@@ -16,7 +16,9 @@
 	
 	<name>eureka</name>
 	<url>http://maven.apache.org</url>
-	<plugin>
+	<build>
+		<plugins> 
+		<plugin>
   
     <executions>
         <execution>
@@ -39,6 +41,10 @@
         </execution>
     </executions>
 </plugin>
+	
+	           	
+		</plugins>
+	</build>
 	
 	<dependencies>
 		<dependency>
