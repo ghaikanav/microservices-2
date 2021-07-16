@@ -1,0 +1,41 @@
+version: "3"
+services: 
+    eureka:
+        container_name: eureka
+        build:
+            context: ./eureka
+            dockerfile: Dockerfile 
+        ports:
+            - "8761:8761"
+    
+    api-gateway:
+        container_name: api-gateway
+        build:
+            context: ./api-gateway
+            dockerfile: Dockerfile 
+        ports:
+            - "8765:8765"
+
+    user-service:
+        container_name: user-service
+        build:
+            context: ./user-service
+            dockerfile: Dockerfile 
+        ports:
+            - "9050:9050"
+
+    card-service:
+        container_name: card-service
+        build:
+            context: ./card-service
+            dockerfile: Dockerfile 
+        ports:
+            - "8050:8050"
+
+    product-service:
+        container_name: product-service
+        build:
+            context: ./product-service
+            dockerfile: Dockerfile 
+        ports:
+            - "7050:7050"
