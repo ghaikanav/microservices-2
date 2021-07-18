@@ -14,11 +14,13 @@ services:
       context: ./api-gateway
       dockerfile: Dockerfile
     depends_on:
-      - "eureka"
+      - eureka
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
     ports:
       - "8765:8765"
+    links:
+      - eureka
 
   user-service:
     container_name: user-service
@@ -26,12 +28,14 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     depends_on:
-      - "eureka"
-      - "api-gateway"
+      - eureka
+      - api-gateway
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
     ports:
       - "9050:9050"
+    links:
+      - eureka
 
   card-service:
     container_name: card-service
@@ -39,12 +43,14 @@ services:
       context: ./card-service
       dockerfile: Dockerfile
     depends_on:
-      - "eureka"
-      - "api-gateway"
+      - eureka
+      - api-gateway
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
     ports:
       - "8050:8050"
+    links:
+      - eureka
 
   product-service:
     container_name: product-service
@@ -52,9 +58,11 @@ services:
       context: ./product-service
       dockerfile: Dockerfile
     depends_on:
-      - "eureka"
-      - "api-gateway"
+      - eureka
+      - api-gateway
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
     ports:
       - "7050:7050"
+    links:
+      - eureka
