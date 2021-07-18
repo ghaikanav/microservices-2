@@ -25,6 +25,8 @@ services:
     build:
       context: ./user-service
       dockerfile: Dockerfile
+    links:
+      - "eureka"
     depends_on:
       - "api-gateway"
     environment:
@@ -37,6 +39,8 @@ services:
     build:
       context: ./card-service
       dockerfile: Dockerfile
+    links:
+      - "eureka"
     depends_on:
       - "api-gateway"
     environment:
@@ -51,6 +55,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - "api-gateway"
+    links:
+      - "eureka"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
     ports:
