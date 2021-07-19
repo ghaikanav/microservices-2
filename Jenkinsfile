@@ -21,7 +21,9 @@ pipeline {
         stage('build') {
             steps {
                 
-bat 'mvn clean install package'
+         script{
+         bat 'mvn clean install package'
+         }
 // 'docker-compose up'    
 
         }
