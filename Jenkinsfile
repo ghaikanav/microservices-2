@@ -6,12 +6,23 @@ pipeline {
     }
     
     stages {
+
+        stage('quality-check'){
+            steps {
+                  git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
+                script{
+                  withSonarQubeEnv('SonarQube'){
+                      bat "mvn sonar:sonar"
+                  }
+                }
+
+            }
+        }
         stage('build') {
             steps {
-    git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
                 
-sh 'mvn clean install package'
-sh 'docker-compose up'    
+bat 'mvn clean install package'
+// 'docker-compose up'    
 
         }
          post {
