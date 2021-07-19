@@ -10,8 +10,8 @@ pipeline {
             steps {
     git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
                 
-bat 'mvn clean install package'
-bat 'docker-compose up'    
+sh 'mvn clean install package'
+sh 'docker-compose up'    
 
         }
          post {
