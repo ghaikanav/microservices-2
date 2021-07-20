@@ -5,6 +5,16 @@ pipeline {
         maven "maven"
         jdk "Java"
     }
+
+    environment  {
+
+        dockerImage = ''
+        registry = 'akshit2707'
+
+        //provide credentials in jenkins credentials and tag it as docker_id
+        registryCredential = 'docker_id'
+
+    }
     
     stages {
 
@@ -50,25 +60,6 @@ pipeline {
             
         }
 
-        
-        
-        //Sonar Quality Check
-
-        stage('quality-check'){
-            steps {
-                  
-                script{
-                  withSonarQubeEnv('SonarQube'){
-                      sh "mvn sonar:sonar"
-                  }
-                }
-
-            }
-        }
-        
-        
-        //Sonar Quality Gate
-
         stage("Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
@@ -81,7 +72,7 @@ pipeline {
             steps{
                  script{
 
-                        sh 'docker login -u akshit2707 -p Akshit619$$$'
+                        sh 'sudo docker login -u akshit2707 -p Akshit619$$$'
                 }
          }
         }
@@ -95,10 +86,15 @@ pipeline {
                  script{
 
                           sh 'docker-compose up  --no-start'
+                          sh 'docker-compose push'
                 }
          }
         }
              
+    }
+
+    post{
+
     }
 
 }
