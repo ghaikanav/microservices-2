@@ -72,7 +72,7 @@ pipeline {
             steps{
                  script{
 
-                        sh "docker login -u akshit2707 -p 'Akshit619$$$'"
+                        sh "docker login -u akshit2707 -p password123"
                 }
          }
         }
