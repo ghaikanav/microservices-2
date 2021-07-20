@@ -15,7 +15,7 @@ pipeline {
     
     stages {
 
-        stage('clone'){
+        stage('Cloning Repository'){
             steps {
                   git branch: 'patch-1' , url: 'https://github.com/ghaikanav/microservices-2.git'
               
@@ -35,16 +35,16 @@ pipeline {
             }
             
         }
-
+/*
        stage('Building Project'){
         steps{
-            script{
-                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests=true"
+
+            script{ 
+                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install"
             }
         }
     }
-        
-        //Sonar Quality Check
+    */
 
         stage('quality-check'){
             steps {
@@ -56,22 +56,26 @@ pipeline {
                 }
 
             }
+
         }
         
         
         //Sonar Quality Gate
 
-        stage("Quality gate") {
+        stage("Quality gate Analysis") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
         }
         
 
-        stage("Dockerising and pushing")
+
+
+        stage("Dockerising Images")
         {
             steps{
                  script{
+
 
                         docker.withRegistry('', registryCredential) { 
                         sh 'docker-compose up --no-start && docker-compose rm -fsv'
@@ -81,6 +85,20 @@ pipeline {
          }
         }
 
+
+
+
+    
+        stage("Pushing to DockerHub")
+        {
+            steps{
+                 script{
+
+                          sh 'docker-compose up  --no-start'
+                          sh 'docker-compose push'
+                }
+         }
+        
              
     }
 
