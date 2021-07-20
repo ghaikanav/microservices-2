@@ -76,7 +76,7 @@ pipeline {
                         docker.withRegistry('', registryCredential) { 
                         sh 'docker-compose up  --no-start'
                         sh 'docker-compose push'
-                    }'
+                    }
                 }
          }
         }
