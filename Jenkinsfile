@@ -66,7 +66,7 @@ pipeline {
             }
         }
         
-
+/*
         stage("Dockerising")
         {
             steps{
@@ -78,7 +78,7 @@ pipeline {
         }
 
 
-
+*/
     
         stage("Calling docker compose file")
         {
