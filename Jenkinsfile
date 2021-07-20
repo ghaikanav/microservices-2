@@ -93,8 +93,6 @@ pipeline {
              
     }
 
-    post{
-
-    }
+  
 
 }
