@@ -42,7 +42,7 @@ pipeline {
        stage('Building Project'){
         steps{
             script{
-                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install"
+                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests=true"
             }
         }
     }
