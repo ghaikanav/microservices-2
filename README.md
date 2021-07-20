@@ -6,3 +6,5 @@
 - User-service : http://localhost:9050
 - Card-service : http://localhost:8050
 - Product-service : http://localhost:7050
+
+Dont read this
