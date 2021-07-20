@@ -74,7 +74,7 @@ pipeline {
                  script{
 
                         docker.withRegistry('', registryCredential) { 
-                        sh 'docker-compose up  --no-start'
+                        sh 'docker-compose up --no-start && docker-compose rm -fsv'
                         sh 'docker-compose push'
                     }
                 }
