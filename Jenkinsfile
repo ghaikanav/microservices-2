@@ -13,6 +13,7 @@ pipeline {
                   git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
               
         }
+        }
             stage('Running Tests'){
             steps{
                script{
@@ -87,4 +88,4 @@ pipeline {
 
         
     }
-}
+
