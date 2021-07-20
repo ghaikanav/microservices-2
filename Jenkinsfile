@@ -12,7 +12,7 @@ pipeline {
                   git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
                 script{
                   withSonarQubeEnv('SonarQube'){
-                      bat "mvn sonar:sonar"
+                      sh "mvn sonar:sonar"
                   }
                 }
 
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 
          script{
-         bat 'mvn clean install package'
+         sh 'mvn clean install package'
          }
 // 'docker-compose up'    
 
