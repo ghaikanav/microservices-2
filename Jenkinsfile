@@ -66,19 +66,19 @@ pipeline {
             }
         }
         
-/*
+
         stage("Dockerising")
         {
             steps{
                  script{
 
-                        sh 'sudo docker login -u akshit2707 -p Akshit619$$$'
+                        sh "docker login -u akshit2707 -p 'Akshit619$$$'"
                 }
          }
         }
 
 
-*/
+
     
         stage("Calling docker compose file")
         {
