@@ -17,7 +17,7 @@ pipeline {
 
         stage('clone'){
             steps {
-                  git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
+                  git branch: 'patch-1' , url: 'https://github.com/ghaikanav/microservices-2.git'
               
         }
         }
@@ -68,7 +68,7 @@ pipeline {
         }
         
 
-        stage("Dockerising")
+        stage("Dockerising and pushing")
         {
             steps{
                  script{
