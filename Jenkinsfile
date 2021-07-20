@@ -18,7 +18,7 @@ pipeline {
     
     stages {
 
-        stage('clone'){
+        stage('Cloning Repository'){
             steps {
                   git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
               
@@ -57,17 +57,30 @@ pipeline {
                     }
                 }
             }
-            
+
+           post{
+
+               success{
+                    sh './jenkins_build.sh'
+        junit '*/build/test-results/*.xml'
+      step([$class: 'JacocoPublisher', 
+      execPattern: 'target/*.exec',
+      classPattern: 'target/classes',
+      sourcePattern: 'src/main/java',
+      exclusionPattern: 'src/test*'
+])
+               }
+           } 
         }
 
-        stage("Quality gate") {
+        stage("Quality gate Analysis") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
         }
         
 
-        stage("Dockerising")
+        stage("Dockerising Images")
         {
             steps{
                  script{
@@ -80,7 +93,7 @@ pipeline {
 
 
     
-        stage("Calling docker compose file")
+        stage("Pushing to DockerHub")
         {
             steps{
                  script{
