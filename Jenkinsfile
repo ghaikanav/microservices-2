@@ -1,19 +1,16 @@
 pipeline {
+    
+    environment { 
+        registry = "YourDockerhubAccount/YourRepository" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+    }
+    
     agent any
     
     tools {
         maven "maven"
         jdk "Java"
-    }
-
-    environment  {
-
-        dockerImage = ''
-        registry = 'akshit2707'
-
-        //provide credentials in jenkins credentials and tag it as docker_id
-        registryCredential = 'docker_id'
-
     }
     
     stages {
@@ -46,19 +43,23 @@ pipeline {
             }
         }
     }
+        
+        //Sonar Quality Check
 
-        stage('Analysing Coverage'){
-            steps{
+        stage('quality-check'){
+            steps {
+                  
                 script{
-
-                    withSonarQubeEnv('SonarQube'){
-                       sh "mvn sonar:sonar"
-
-                    }
+                  withSonarQubeEnv('SonarQube'){
+                      sh "mvn sonar:sonar"
+                  }
                 }
+
             }
-            
         }
+        
+        
+        //Sonar Quality Gate
 
         stage("Quality gate") {
             steps {
@@ -72,27 +73,14 @@ pipeline {
             steps{
                  script{
 
-                        sh 'sudo docker login -u akshit2707 -p Akshit619$$$'
+                        docker.withRegistry('', registryCredential) { 
+                        sh 'docker-compose up  --no-start'
+                    }'
                 }
          }
         }
 
-
-
-    
-        stage("Calling docker compose file")
-        {
-            steps{
-                 script{
-
-                          sh 'docker-compose up  --no-start'
-                          sh 'docker-compose push'
-                }
-         }
-        }
              
     }
-
-  
 
 }
