@@ -1,26 +1,22 @@
 pipeline {
+
+    environment { 
+        registry = "YourDockerhubAccount/YourRepository" 
+        registryCredential = 'docker_id' 
+        dockerImage = '' 
+    }
+
     agent any
     
     tools {
         maven "maven"
         jdk "Java"
     }
-
-    environment  {
-
-        dockerImage = ''
-        registry = 'akshit2707'
-
-        //provide credentials in jenkins credentials and tag it as docker_id
-        registryCredential = 'docker_id'
-
-    }
     
     stages {
-
-        stage('Cloning Repository'){
+        stage('clone'){
             steps {
-                  git branch: 'master' , url: 'https://github.com/aarsh2211/microservices-2.git'
+                  git branch: 'patch-1' , url: 'https://github.com/ghaikanav/microservices-2.git'
               
         }
         }
@@ -38,62 +34,45 @@ pipeline {
             }
             
         }
-/*
        stage('Building Project'){
         steps{
-            script{ 
-                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install"
+            script{
+                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests=true"
             }
         }
     }
-    */
-
-        stage('Analysing Coverage'){
-            steps{
+        
+        //Sonar Quality Check
+        stage('quality-check'){
+            steps {
+                  
                 script{
-
-                    withSonarQubeEnv('SonarQube'){
-                       sh "mvn sonar:sonar"
-
-                    }
+                  withSonarQubeEnv('SonarQube'){
+                      sh "mvn sonar:sonar"
+                  }
                 }
             }
-
         }
-
-        stage("Quality gate Analysis") {
+        
+        
+        //Sonar Quality Gate
+        stage("Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
         }
         
-
-        stage("Dockerising Images")
+        stage("Dockerising and pushing")
         {
             steps{
                  script{
-
-                        sh "docker login -u akshit2707 -p password123"
-                }
-         }
-        }
-
-
-
-    
-        stage("Pushing to DockerHub")
-        {
-            steps{
-                 script{
-
-                          sh 'docker-compose up  --no-start'
-                          sh 'docker-compose push'
+                        docker.withRegistry('', registryCredential) { 
+                        sh 'docker-compose up  --no-start'
+                        sh 'docker-compose push'
+                    }
                 }
          }
         }
              
     }
-
-  
-
 }
