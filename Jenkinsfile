@@ -1,11 +1,11 @@
 pipeline {
-    
+
     environment { 
         registry = "YourDockerhubAccount/YourRepository" 
         registryCredential = 'docker_id' 
         dockerImage = '' 
     }
-    
+
     agent any
     
     tools {
@@ -14,8 +14,7 @@ pipeline {
     }
     
     stages {
-
-        stage('Cloning Repository'){
+        stage('clone'){
             steps {
                   git branch: 'patch-1' , url: 'https://github.com/ghaikanav/microservices-2.git'
               
@@ -35,17 +34,15 @@ pipeline {
             }
             
         }
-/*
        stage('Building Project'){
         steps{
-
-            script{ 
-                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install"
+            script{
+                 sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests=true"
             }
         }
     }
-    */
-
+        
+        //Sonar Quality Check
         stage('quality-check'){
             steps {
                   
@@ -54,52 +51,28 @@ pipeline {
                       sh "mvn sonar:sonar"
                   }
                 }
-
             }
-
         }
         
         
         //Sonar Quality Gate
-
-        stage("Quality gate Analysis") {
+        stage("Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
         }
         
-
-
-
-        stage("Dockerising Images")
+        stage("Dockerising and pushing")
         {
             steps{
                  script{
-
-
                         docker.withRegistry('', registryCredential) { 
-                        sh 'docker-compose up --no-start && docker-compose rm -fsv'
+                        sh 'docker-compose up  --no-start'
                         sh 'docker-compose push'
                     }
                 }
          }
         }
-
-
-
-
-    
-        stage("Pushing to DockerHub")
-        {
-            steps{
-                 script{
-
-                          sh 'docker-compose up  --no-start'
-                          sh 'docker-compose push'
-                }
-         }
-        
              
     }
-
 }
